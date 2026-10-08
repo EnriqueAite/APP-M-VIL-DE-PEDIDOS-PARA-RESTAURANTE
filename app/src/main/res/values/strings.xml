@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ElBuenSabor</string>
+    <string name="app_title">El Buen Sabor</string>
+    <string name="app_subtitle">Comida casera, sabor único</string>
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="btn_login">Iniciar Sesión</string>
+    <string name="btn_register">Registrarse</string>
+    <string name="msg_role">🔒 El sistema detectará automáticamente tu rol</string>
+
+    <!-- Menu -->
+    <string name="saludo_titulo">¡Buen provecho!</string>
+    <string name="saludo_subtitulo">Hola, Cliente</string>
+    <string name="hint_buscar">Buscar plato...</string>
+    <string name="filtro_todos">Todos</string>
+    <string name="filtro_carnes">Carnes</string>
+    <string name="filtro_pescados">Pescados</string>
+    <string name="nav_menu">Menú</string>
+    <string name="nav_carrito">Carrito</string>
+    <string name="nav_pedidos">Pedidos</string>
+    <string name="nav_perfil">Perfil</string>
+
+    <string name="filtro_ensaladas">Ensaladas</string>
+    <string name="filtro_bebidas">Bebidas</string>
+</resources>

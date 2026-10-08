@@ -1,0 +1,12 @@
+<resources>
+    <style name="Theme.ElBuenSabor" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/brown_primary</item>
+        <item name="colorPrimaryVariant">@color/brown_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@null</item>
+    </style>
+</resources>

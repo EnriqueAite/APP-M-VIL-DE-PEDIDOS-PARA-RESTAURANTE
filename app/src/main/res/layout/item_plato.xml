@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_card_plato"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="10dp"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginEnd="12dp">
+
+        <View
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/bg_image_placeholder"/>
+
+        <ImageView
+            android:id="@+id/ivPlato"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:contentDescription="Imagen del plato"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_dark"/>
+
+        <TextView
+            android:id="@+id/tvDescripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/text_hint"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
+            android:maxLines="2"/>
+
+        <TextView
+            android:id="@+id/tvPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/brown_primary"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btnAgregar"
+        android:layout_width="90dp"
+        android:layout_height="38dp"
+        android:text="Agregar"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_button_primary"
+        android:layout_marginStart="8dp"
+        android:gravity="center"/>
+
+</LinearLayout>

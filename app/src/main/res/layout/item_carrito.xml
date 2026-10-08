@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_card_plato"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="10dp"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <!-- Imagen -->
+    <FrameLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="12dp">
+
+        <View
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_image_placeholder"/>
+
+        <ImageView
+            android:id="@+id/ivPlatoCarrito"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:contentDescription="Imagen del plato"/>
+    </FrameLayout>
+
+    <!-- Nombre y precio -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvNombreCarrito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_dark"/>
+
+        <TextView
+            android:id="@+id/tvPrecioCarrito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/brown_primary"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- Controles de cantidad -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_filter_inactive"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/btnMenos"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:text="-"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/brown_primary"/>
+
+        <TextView
+            android:id="@+id/tvCantidad"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_dark"/>
+
+        <TextView
+            android:id="@+id/btnMas"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:text="+"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/brown_primary"/>
+
+    </LinearLayout>
+
+    <!-- Botón X eliminar -->
+    <TextView
+        android:id="@+id/btnEliminar"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:text="✕"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/text_hint"
+        android:layout_marginStart="8dp"/>
+
+</LinearLayout>
