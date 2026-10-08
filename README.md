@@ -87,4 +87,4 @@ Sigue los pasos **en este orden**, porque cada parte depende de la anterior.
 ## Autor
 
 **Diego Enrique** – Técnico en Computación e Informática, Cibertec.
-LinkedIn: _(agrega aquí el enlace a tu perfil)_
+LinkedIn: _(https://www.linkedin.com/in/diego-enrique-aite-velasquez-169555441/)_
