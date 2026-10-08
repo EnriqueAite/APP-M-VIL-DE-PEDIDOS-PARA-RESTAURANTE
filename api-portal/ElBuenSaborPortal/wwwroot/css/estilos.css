@@ -1,0 +1,498 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #F2F0EC;
+    color: #333333;
+}
+
+/* NAV */
+nav {
+    background: #7B3F00;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    gap: 8px;
+}
+
+    nav span {
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        flex: 1;
+    }
+
+    nav a {
+        color: #FFDDB8;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+
+        nav a:hover, nav a.activo {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        nav a.btn-salir {
+            color: #FFAAAA;
+        }
+
+/* CONTENEDOR */
+.contenedor {
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 24px;
+}
+
+h1 {
+    font-size: 22px;
+    color: #7B3F00;
+    margin-bottom: 24px;
+}
+
+/* TARJETAS DASHBOARD */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+    .card .numero {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+
+    .card .etiqueta {
+        font-size: 13px;
+        color: #999999;
+    }
+
+    .card.pendiente .numero {
+        color: #FF9800;
+    }
+
+    .card.preparando .numero {
+        color: #E53935;
+    }
+
+    .card.enviado .numero {
+        color: #7E57C2;
+    }
+
+    .card.entregado .numero {
+        color: #4CAF50;
+    }
+
+    .card.ventas .numero {
+        color: #7B3F00;
+    }
+
+/* TABLAS */
+.tabla-contenedor {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #7B3F00;
+    color: white;
+}
+
+    thead th {
+        padding: 14px 16px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+tbody tr {
+    border-bottom: 1px solid #EEEEEE;
+    transition: background 0.15s;
+}
+
+    tbody tr:hover {
+        background: #FFF8F3;
+    }
+
+tbody td {
+    padding: 12px 16px;
+    font-size: 14px;
+}
+
+/* BADGES DE ESTADO */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+    .badge.Pendiente {
+        background: #FF9800;
+    }
+
+    .badge.Preparando {
+        background: #E53935;
+    }
+
+    .badge.Enviado {
+        background: #7E57C2;
+    }
+
+    .badge.Entregado {
+        background: #4CAF50;
+    }
+
+/* BOTONES */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+    .btn:hover {
+        opacity: 0.85;
+    }
+
+.btn-primary {
+    background: #7B3F00;
+    color: white;
+}
+
+.btn-editar {
+    background: #2196F3;
+    color: white;
+}
+
+.btn-borrar {
+    background: #F44336;
+    color: white;
+}
+
+.btn-verde {
+    background: #4CAF50;
+    color: white;
+}
+
+/* BARRA SUPERIOR DE SECCIÓN */
+.barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+    .barra input {
+        padding: 10px 16px;
+        border: 1px solid #DDDDDD;
+        border-radius: 8px;
+        font-size: 14px;
+        width: 260px;
+        outline: none;
+    }
+
+        .barra input:focus {
+            border-color: #7B3F00;
+        }
+
+/* FILTROS */
+.filtros {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.filtro {
+    padding: 6px 16px;
+    border: 2px solid #7B3F00;
+    border-radius: 20px;
+    background: white;
+    color: #7B3F00;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+    .filtro.activo, .filtro:hover {
+        background: #7B3F00;
+        color: white;
+    }
+
+/* MODAL */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+    .modal-overlay.visible {
+        display: flex;
+    }
+
+.modal {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+    .modal h2 {
+        font-size: 18px;
+        color: #7B3F00;
+        margin-bottom: 20px;
+    }
+
+.campo {
+    margin-bottom: 16px;
+}
+
+    .campo label {
+        display: block;
+        font-size: 13px;
+        color: #999999;
+        margin-bottom: 6px;
+    }
+
+    .campo input, .campo select {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #DDDDDD;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+    }
+
+        .campo input:focus, .campo select:focus {
+            border-color: #7B3F00;
+        }
+
+.modal-botones {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+/* LOGIN */
+.login-contenedor {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    background: white;
+    border-radius: 16px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+    .login-card .logo {
+        width: 80px;
+        height: 80px;
+        background: #7B3F00;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 36px;
+    }
+
+    .login-card h1 {
+        margin-bottom: 8px;
+    }
+
+    .login-card p {
+        color: #999999;
+        font-size: 14px;
+        margin-bottom: 32px;
+    }
+
+    .login-card .campo {
+        text-align: left;
+    }
+
+    .login-card .btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 15px;
+        margin-top: 8px;
+    }
+
+.error {
+    color: #E53935;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+}
+
+/* IMAGEN EN TABLA */
+.img-tabla {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.img-vacia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F2F0EC;
+    font-size: 20px;
+}
+
+/* PREVIEW EN MODAL */
+.preview-imagen {
+    width: 100%;
+    height: 140px;
+    border: 2px dashed #DDDDDD;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    overflow: hidden;
+    background: #FAFAFA;
+}
+
+    .preview-imagen span {
+        color: #999999;
+        font-size: 13px;
+    }
+
+    .preview-imagen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.btn-expandir-pedido {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    color: #7B3F00;
+    margin-right: 6px;
+    padding: 2px 4px;
+}
+
+.badge.Cancelado {
+    background: #9E9E9E;
+}
+
+/* Contenedor más ancho para Pedidos */
+.contenedor-ancho {
+    max-width: 1400px;
+    margin: 32px auto;
+    padding: 0 24px;
+}
+
+/* Botones de acciones del pedido, en columna compacta */
+.acciones-pedido {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 160px;
+}
+
+    .acciones-pedido .fila-estado {
+        display: flex;
+        gap: 6px;
+    }
+
+.btn-sm {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.btn-gris {
+    background: #9E9E9E;
+    color: white;
+}
+
+.btn-rojo {
+    background: #F44336;
+    color: white;
+}
+
+/* Botones tipo ícono (cancelar X, eliminar basurero) */
+.btn-icono {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+}
+
+    .btn-icono:hover:not(:disabled) {
+        opacity: 0.85;
+    }
+
+.btn-cancelar-icono {
+    background: #9E9E9E;
+    color: white;
+}
+
+    .btn-cancelar-icono:disabled {
+        background: white;
+        color: #DDDDDD;
+        border: 1px solid #EEEEEE;
+        cursor: not-allowed;
+    }
+
+.btn-eliminar-icono {
+    background: #F44336;
+    color: white;
+}

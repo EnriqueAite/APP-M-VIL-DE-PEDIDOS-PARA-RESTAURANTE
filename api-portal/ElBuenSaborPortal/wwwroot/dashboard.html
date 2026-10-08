@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — El Buen Sabor</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <nav>
+        <span>🍽 El Buen Sabor</span>
+        <a href="dashboard.html" class="activo">Dashboard</a>
+        <a href="productos.html">Productos</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="#" class="btn-salir" onclick="cerrarSesion()">Cerrar sesión</a>
+    </nav>
+
+    <div class="contenedor">
+        <h1>Dashboard</h1>
+
+        <div class="cards">
+            <div class="card pendiente">
+                <div class="numero" id="cant-pendiente">—</div>
+                <div class="etiqueta">Pendientes</div>
+            </div>
+            <div class="card preparando">
+                <div class="numero" id="cant-preparando">—</div>
+                <div class="etiqueta">Preparando</div>
+            </div>
+            <div class="card enviado">
+                <div class="numero" id="cant-enviado">—</div>
+                <div class="etiqueta">Enviados</div>
+            </div>
+            <div class="card entregado">
+                <div class="numero" id="cant-entregado">—</div>
+                <div class="etiqueta">Entregados</div>
+            </div>
+            <div class="card ventas">
+                <div class="numero" id="ventas-hoy">—</div>
+                <div class="etiqueta">Ventas totales</div>
+            </div>
+        </div>
+
+        <h1>Pedidos recientes</h1>
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-pedidos"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        if (!sessionStorage.getItem("admin")) {
+            window.location.href = "index.html";
+        }
+
+        function cerrarSesion() {
+            sessionStorage.removeItem("admin");
+            window.location.href = "index.html";
+        }
+
+        async function cargarDashboard() {
+            const res    = await fetch(`${API_URL}/pedidos`);
+            const pedidos = await res.json();
+
+            const contar = estado =>
+                pedidos.filter(p => p.estado === estado).length;
+
+            document.getElementById("cant-pendiente").textContent =
+                contar("Pendiente");
+            document.getElementById("cant-preparando").textContent =
+                contar("Preparando");
+            document.getElementById("cant-enviado").textContent =
+                contar("Enviado");
+            document.getElementById("cant-entregado").textContent =
+                contar("Entregado");
+
+            const ventas = pedidos
+                .filter(p => p.estado === "Entregado")
+                .reduce((sum, p) => sum + p.total, 0);
+            document.getElementById("ventas-hoy").textContent =
+                "S/ " + ventas.toFixed(2);
+
+            const tbody = document.getElementById("tabla-pedidos");
+            const recientes = pedidos.slice(0, 10);
+
+            tbody.innerHTML = recientes.map(p => `
+                <tr>
+                    <td>${p.codigo}</td>
+                    <td>${p.usuario?.nombre ?? "—"}</td>
+                    <td>S/ ${p.total.toFixed(2)}</td>
+                    <td><span class="badge ${p.estado}">${p.estado}</span></td>
+                    <td>${new Date(p.fechaPedido)
+                        .toLocaleDateString("es-PE")}</td>
+                </tr>
+            `).join("");
+        }
+
+        cargarDashboard();
+    </script>
+</body>
+</html>

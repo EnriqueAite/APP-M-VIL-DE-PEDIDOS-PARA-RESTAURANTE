@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos — El Buen Sabor</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <nav>
+        <span>🍽 El Buen Sabor</span>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="productos.html">Productos</a>
+        <a href="pedidos.html" class="activo">Pedidos</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="#" class="btn-salir" onclick="cerrarSesion()">Cerrar sesión</a>
+    </nav>
+
+    <div class="contenedor-ancho">
+        <h1>Gestión de Pedidos</h1>
+
+        <div class="filtros">
+            <button class="filtro activo"
+                    onclick="filtrar('Todos', this)">
+                Todos
+            </button>
+            <button class="filtro"
+                    onclick="filtrar('Pendiente', this)">
+                Pendiente
+            </button>
+            <button class="filtro"
+                    onclick="filtrar('Preparando', this)">
+                Preparando
+            </button>
+            <button class="filtro"
+                    onclick="filtrar('Enviado', this)">
+                Enviado
+            </button>
+            <button class="filtro"
+                    onclick="filtrar('Entregado', this)">
+                Entregado
+            </button>
+            <button class="filtro"
+                    onclick="filtrar('Cancelado', this)">
+                Cancelado
+            </button>
+        </div>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Cliente</th>
+                        <th>Dirección</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Cambiar estado</th>
+                        <th>Cancelar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-pedidos"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        if (!sessionStorage.getItem("admin")) {
+            window.location.href = "index.html";
+        }
+
+        function cerrarSesion() {
+            sessionStorage.removeItem("admin");
+            window.location.href = "index.html";
+        }
+
+        let pedidos = [];
+        let filtroActual = "Todos";
+        const estados = ["Pendiente","Preparando","Enviado","Entregado"];
+
+        async function cargarPedidos() {
+            const res = await fetch(`${API_URL}/pedidos`);
+            pedidos   = await res.json();
+            renderTabla();
+        }
+
+        function filtrar(estado, btn) {
+            filtroActual = estado;
+            document.querySelectorAll(".filtro")
+                .forEach(b => b.classList.remove("activo"));
+            btn.classList.add("activo");
+            renderTabla();
+        }
+
+        function renderTabla() {
+            const lista = filtroActual === "Todos"
+                ? pedidos
+                : pedidos.filter(p => p.estado === filtroActual);
+
+            const tbody = document.getElementById("tabla-pedidos");
+
+            if (lista.length === 0) {
+                tbody.innerHTML = `
+            <tr>
+                <td colspan="9"
+                    style="text-align:center;color:#999;padding:32px">
+                    No hay pedidos en este estado
+                </td>
+            </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = lista.map(p => {
+                const idx = estados.indexOf(p.estado);
+                const hayAnterior = idx > 0;
+                const haySiguiente = idx < estados.length - 1;
+                const noCancelado = p.estado !== "Cancelado";
+                const esEntregado = p.estado === "Entregado";
+                const detalles = p.detalles ?? [];
+
+                const filasProductos = detalles.map(d => `
+            <tr style="background:#FAF7F3">
+                <td colspan="2" style="padding-left:32px;font-size:13px">
+                    ${d.cantidad}x ${d.producto?.nombre ?? "Producto"}
+                </td>
+                <td colspan="2" style="font-size:13px;color:#999">
+                    S/ ${Number(d.precioUnitario).toFixed(2)}
+                </td>
+                <td colspan="5" style="font-size:13px;text-align:right;
+                    font-weight:bold;color:#7B3F00">
+                    S/ ${(d.precioUnitario * d.cantidad).toFixed(2)}
+                </td>
+            </tr>
+        `).join("");
+
+                return `
+        <tr>
+            <td>
+                <button class="btn-expandir-pedido"
+                    onclick="toggleDetalle(${p.idPedido})">
+                    <span id="flecha-${p.idPedido}">▶</span>
+                </button>
+                ${p.codigo}
+            </td>
+            <td>${p.usuario?.nombre ?? "—"}</td>
+            <td>${p.direccionEntrega}</td>
+            <td>S/ ${Number(p.total).toFixed(2)}</td>
+            <td>
+                <span class="badge ${p.estado}">${p.estado}</span>
+            </td>
+            <td>${new Date(p.fechaPedido)
+                        .toLocaleDateString("es-PE")}</td>
+            <td>
+                <div class="fila-estado">
+                    ${hayAnterior && noCancelado ? `
+                    <button class="btn btn-editar btn-sm"
+                        onclick="cambiarEstado(${p.idPedido},
+                        '${estados[idx - 1]}')">
+                        ◀ ${estados[idx - 1]}
+                    </button>` : ""}
+                    ${haySiguiente && noCancelado ? `
+                    <button class="btn btn-primary btn-sm"
+                        onclick="cambiarEstado(${p.idPedido},
+                        '${estados[idx + 1]}')">
+                        ${estados[idx + 1]} ▶
+                    </button>` : ""}
+                </div>
+            </td>
+            <td>
+                <button class="btn-icono btn-cancelar-icono"
+                    ${esEntregado ? "disabled" : ""}
+                    onclick="cancelarPedido(${p.idPedido})">
+                    ✕
+                </button>
+            </td>
+            <td>
+                <button class="btn-icono btn-eliminar-icono"
+                    onclick="eliminarPedido(${p.idPedido})">
+                    🗑
+                </button>
+            </td>
+        </tr>
+        <tr id="detalle-${p.idPedido}" style="display:none">
+            <td colspan="9" style="padding:0">
+                <table style="width:100%">
+                    <tbody>${filasProductos}</tbody>
+                </table>
+            </td>
+        </tr>`;
+            }).join("");
+        }
+
+        function toggleDetalle(idPedido) {
+            const fila = document.getElementById(`detalle-${idPedido}`);
+            const flecha = document.getElementById(`flecha-${idPedido}`);
+            const visible = fila.style.display !== "none";
+
+            fila.style.display = visible ? "none" : "table-row";
+            flecha.textContent = visible ? "▶" : "▼";
+        }
+
+        async function cancelarPedido(idPedido) {
+            await fetch(`${API_URL}/pedidos/${idPedido}/cancelar`, {
+                method: "PATCH"
+            });
+            cargarPedidos();
+        }
+
+        async function eliminarPedido(idPedido) {
+            await fetch(`${API_URL}/pedidos/${idPedido}`, {
+                method: "DELETE"
+            });
+            cargarPedidos();
+        }
+
+        function toggleDetalle(idPedido) {
+            const fila = document.getElementById(`detalle-${idPedido}`);
+            const flecha = document.getElementById(`flecha-${idPedido}`);
+            const visible = fila.style.display !== "none";
+
+            fila.style.display = visible ? "none" : "table-row";
+            flecha.textContent = visible ? "▶" : "▼";
+        }
+
+        async function cambiarEstado(idPedido, nuevoEstado) {
+            await fetch(`${API_URL}/pedidos/${idPedido}/estado`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ estado: nuevoEstado })
+            });
+            cargarPedidos();
+        }
+
+        async function cancelarPedido(idPedido) {
+            await fetch(`${API_URL}/pedidos/${idPedido}/cancelar`, {
+                method: "PATCH"
+            });
+            cargarPedidos();
+        }
+
+        cargarPedidos();
+    </script>
+</body>
+</html>

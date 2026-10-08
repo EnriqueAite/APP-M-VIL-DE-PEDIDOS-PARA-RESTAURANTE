@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Buen Sabor — Admin</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <div class="login-contenedor">
+        <div class="login-card">
+            <div class="logo">🍽</div>
+            <h1>El Buen Sabor</h1>
+            <p>Portal Administrativo</p>
+
+            <div class="campo">
+                <label>Correo electrónico</label>
+                <input type="email" id="correo"
+                       placeholder="admin@elbuensabor.com">
+            </div>
+            <div class="campo">
+                <label>Contraseña</label>
+                <input type="password" id="password"
+                       placeholder="••••••••">
+            </div>
+
+            <button class="btn btn-primary" onclick="iniciarSesion()">
+                Iniciar sesión
+            </button>
+
+            <p class="error" id="error">
+                Correo o contraseña incorrectos
+            </p>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // Si ya hay sesión, ir directo al dashboard
+        if (sessionStorage.getItem("admin")) {
+            window.location.href = "dashboard.html";
+        }
+
+        async function iniciarSesion() {
+            const correo   = document.getElementById("correo").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (!correo || !password) return;
+
+            try {
+                const res = await fetch(`${API_URL}/administrador/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ correo, password })
+                });
+
+                if (!res.ok) {
+                    document.getElementById("error").style.display = "block";
+                    return;
+                }
+
+                const admin = await res.json();
+                sessionStorage.setItem("admin", JSON.stringify(admin));
+                window.location.href = "dashboard.html";
+
+            } catch (e) {
+                document.getElementById("error").style.display = "block";
+            }
+        }
+
+        // Login con Enter
+        document.addEventListener("keydown", e => {
+            if (e.key === "Enter") iniciarSesion();
+        });
+    </script>
+</body>
+</html>

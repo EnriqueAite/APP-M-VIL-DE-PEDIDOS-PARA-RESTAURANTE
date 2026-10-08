@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElBuenSaborAPI", "ElBuenSaborAPI\ElBuenSaborAPI.csproj", "{24B3B2CA-E344-4DDB-A38B-E77938B59541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElBuenSaborPortal", "ElBuenSaborPortal\ElBuenSaborPortal.csproj", "{B46C4026-8916-4953-9894-067BAE304441}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24B3B2CA-E344-4DDB-A38B-E77938B59541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24B3B2CA-E344-4DDB-A38B-E77938B59541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24B3B2CA-E344-4DDB-A38B-E77938B59541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24B3B2CA-E344-4DDB-A38B-E77938B59541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B46C4026-8916-4953-9894-067BAE304441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B46C4026-8916-4953-9894-067BAE304441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B46C4026-8916-4953-9894-067BAE304441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B46C4026-8916-4953-9894-067BAE304441}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {428A31B9-66C0-4C01-A0A8-03C9594D8903}
+	EndGlobalSection
+EndGlobal

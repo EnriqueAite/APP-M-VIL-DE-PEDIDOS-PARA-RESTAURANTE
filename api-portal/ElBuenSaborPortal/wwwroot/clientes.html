@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes — El Buen Sabor</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <nav>
+        <span>🍽 El Buen Sabor</span>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="productos.html">Productos</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="clientes.html" class="activo">Clientes</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="#" class="btn-salir" onclick="cerrarSesion()">Cerrar sesión</a>
+    </nav>
+
+    <div class="contenedor">
+        <h1>Cuentas de Clientes</h1>
+
+        <div class="barra">
+            <input type="text" id="buscador"
+                   placeholder="🔍 Buscar por nombre o correo..."
+                   oninput="filtrarTabla()">
+        </div>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-clientes"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        if (!sessionStorage.getItem("admin")) {
+            window.location.href = "index.html";
+        }
+
+        function cerrarSesion() {
+            sessionStorage.removeItem("admin");
+            window.location.href = "index.html";
+        }
+
+        let clientes = [];
+
+        async function cargarClientes() {
+            const res = await fetch(`${API_URL}/usuarios`);
+            clientes = await res.json();
+            renderTabla(clientes);
+        }
+
+        function renderTabla(lista) {
+            const tbody = document.getElementById("tabla-clientes");
+
+            if (lista.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5"
+                            style="text-align:center;color:#999;padding:32px">
+                            No hay clientes registrados
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = lista.map(c => `
+                <tr>
+                    <td>${c.nombre}</td>
+                    <td>${c.correo}</td>
+                    <td>${c.telefono ?? "—"}</td>
+                    <td>${c.direccion ?? "—"}</td>
+                    <td>
+                        <button class="btn btn-borrar"
+                            onclick="eliminarCliente(${c.idUsuario})">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        function filtrarTabla() {
+            const q = document.getElementById("buscador")
+                .value.toLowerCase();
+            const lista = clientes.filter(c =>
+                c.nombre.toLowerCase().includes(q) ||
+                c.correo.toLowerCase().includes(q));
+            renderTabla(lista);
+        }
+
+        async function eliminarCliente(id) {
+            const res = await fetch(`${API_URL}/usuarios/${id}`,
+                { method: "DELETE" });
+
+            if (res.ok) {
+                cargarClientes();
+            } else {
+                const data = await res.json();
+                alert(data.mensaje ?? "No se pudo eliminar el cliente");
+            }
+        }
+
+        cargarClientes();
+    </script>
+</body>
+</html>

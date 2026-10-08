@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil — El Buen Sabor</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <nav>
+        <span>🍽 El Buen Sabor</span>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="productos.html">Productos</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="perfil.html" class="activo">Perfil</a>
+        <a href="#" class="btn-salir" onclick="cerrarSesion()">Cerrar sesión</a>
+    </nav>
+
+    <div class="contenedor" style="max-width:500px">
+        <h1>Mi Perfil</h1>
+
+        <div class="tabla-contenedor" style="padding:32px">
+            <div style="text-align:center;margin-bottom:24px">
+                <div style="width:90px;height:90px;border-radius:50%;
+                    background:#7B3F00;display:flex;align-items:center;
+                    justify-content:center;margin:0 auto 12px;
+                    font-size:36px;color:white">
+                    👤
+                </div>
+                <span style="display:inline-block;background:#7B3F00;
+                    color:white;font-size:12px;padding:4px 14px;
+                    border-radius:12px">Administrador</span>
+            </div>
+
+            <div class="campo">
+                <label>Nombre</label>
+                <input type="text" id="admin-nombre">
+            </div>
+            <div class="campo">
+                <label>Correo electrónico</label>
+                <input type="email" id="admin-correo">
+            </div>
+            <div class="campo">
+                <label>Teléfono</label>
+                <input type="text" id="admin-telefono">
+            </div>
+            <div class="campo">
+                <label>Nueva contraseña (dejar vacío para no cambiar)</label>
+                <input type="password" id="admin-password"
+                       placeholder="••••••••">
+            </div>
+
+            <button class="btn btn-primary" style="width:100%;padding:12px"
+                    onclick="guardarPerfil()">
+                Guardar cambios
+            </button>
+
+            <p id="mensaje-ok"
+               style="display:none;color:#4CAF50;text-align:center;
+                margin-top:14px;font-size:13px">
+                ✓ Datos actualizados correctamente
+            </p>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        if (!sessionStorage.getItem("admin")) {
+            window.location.href = "index.html";
+        }
+
+        function cerrarSesion() {
+            sessionStorage.removeItem("admin");
+            window.location.href = "index.html";
+        }
+
+        const admin = JSON.parse(sessionStorage.getItem("admin"));
+
+        function cargarPerfil() {
+            document.getElementById("admin-nombre").value   = admin.nombre;
+            document.getElementById("admin-correo").value   = admin.correo;
+            document.getElementById("admin-telefono").value = admin.telefono ?? "";
+        }
+
+        async function guardarPerfil() {
+            const nombre   = document.getElementById("admin-nombre")
+                .value.trim();
+            const correo   = document.getElementById("admin-correo")
+                .value.trim();
+            const telefono = document.getElementById("admin-telefono")
+                .value.trim();
+            const password = document.getElementById("admin-password")
+                .value.trim();
+
+            const cuerpo = {
+                idAdmin: admin.idAdmin,
+                nombre,
+                correo,
+                telefono,
+                password: password || admin.password,
+                ultimoAcceso: admin.ultimoAcceso
+            };
+
+            const res = await fetch(`${API_URL}/administrador/${admin.idAdmin}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(cuerpo)
+            });
+
+            if (res.ok) {
+                cuerpo.idAdmin = admin.idAdmin;
+                sessionStorage.setItem("admin", JSON.stringify(cuerpo));
+                document.getElementById("mensaje-ok").style.display = "block";
+                document.getElementById("admin-password").value = "";
+                setTimeout(() => {
+                    document.getElementById("mensaje-ok").style.display = "none";
+                }, 2500);
+            }
+        }
+
+        cargarPerfil();
+    </script>
+</body>
+</html>
